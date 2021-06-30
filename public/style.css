@@ -1,0 +1,29 @@
+* {
+    box-sizing: border-box;
+}
+
+.imgWrapper {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.image {
+    margin: 5px;
+    padding: 5px;
+    border: 1px solid green;
+}
+
+.image img {
+    object-fit: cover;
+    width: 300px;
+    height: 250px;
+    border: 1px solid #000;
+    margin: 10px 0;
+}
+
+.imgTitle {
+    padding: 0;
+    margin: 0;
+}
