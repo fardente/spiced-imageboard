@@ -9,13 +9,27 @@ if (process.env.DATABASE_URL) {
 
 function getImages() {
     return db
-        .query("SELECT * FROM images")
+        .query("SELECT * FROM images ORDER BY id DESC")
         .then((result) => {
             return result.rows;
         })
         .catch((error) => console.log(error));
 }
 
+function addImage(img) {
+    console.log("img", img);
+    return db
+        .query(
+            "INSERT INTO images (url, username, title, description) VALUES ($1, $2, $3, $4) RETURNING *",
+            [img.url, img.username, img.title, img.description]
+        )
+        .then((result) => {
+            console.log(result);
+            return result.rows[0];
+        });
+}
+
 module.exports = {
     getImages,
+    addImage,
 };
