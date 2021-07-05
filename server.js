@@ -18,6 +18,13 @@ app.get("/api/images.json", (request, response) => {
     });
 });
 
+app.get("/api/images/:imageId", (request, response) => {
+    db.getImageById(request.params.imageId).then((result) => {
+        console.log(result);
+        response.json(result);
+    });
+});
+
 app.post("/upload", uploader.single("file"), upload, (request, response) => {
     // console.log(request.body, request.file);
     request.body.url = awsBucketUrl + request.file.filename;

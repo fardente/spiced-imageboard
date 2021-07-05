@@ -13,7 +13,15 @@ function getImages() {
         .then((result) => {
             return result.rows;
         })
-        .catch((error) => console.log(error));
+        .catch((error) => console.log("db.getimages error", error));
+}
+
+function getImageById(id) {
+    return db
+        .query("SELECT * FROM images WHERE id = $1", [id])
+        .then((result) => {
+            return result.rows[0];
+        });
 }
 
 function addImage(img) {
@@ -31,5 +39,6 @@ function addImage(img) {
 
 module.exports = {
     getImages,
+    getImageById,
     addImage,
 };

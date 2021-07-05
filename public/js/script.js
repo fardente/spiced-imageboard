@@ -1,3 +1,25 @@
+Vue.component("image-details", {
+    template: "#image-details",
+    props: ["id"],
+    data: function () {
+        return {
+            image: {},
+        };
+    },
+    mounted: function () {
+        axios.get("/api/images/" + this.id).then((image) => {
+            console.log(image.data);
+            this.image = image.data;
+        });
+    },
+    methods: {
+        closeDetails: function (event) {
+            console.log("modal closedetails");
+            this.$emit("close-details", event);
+        },
+    },
+});
+
 new Vue({
     el: "#main",
     mounted: function () {
@@ -35,6 +57,14 @@ new Vue({
             this.filePath = event.target.files[0];
             console.log(event.target.files[0]);
         },
+        showDetails: function (id) {
+            console.log("click on details", id);
+            this.currentImgId = id;
+        },
+        closeDetails: function () {
+            console.log("Main vue closedetails");
+            this.currentImgId = null;
+        },
     },
     data: {
         mainTitle: "Image Mine",
@@ -43,5 +73,6 @@ new Vue({
         username: "",
         description: "",
         title: "",
+        currentImgId: null,
     },
 });
