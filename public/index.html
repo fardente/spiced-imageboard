@@ -45,8 +45,21 @@
         <div class="modal">
             <button v-on:click="closeDetails" class="closeBtn">X</button>
             <img v-bind:id="id" :src="image.url" alt="">
+            <comments v-bind:image_id="id"></comments>
         </div>
-    </script>   
+    </script> 
+        <script id="comments" type="text/x-template">
+        <div class="comments">
+            <ul>
+                <li v-for="comment in comments">{{comment.username}} - {{comment.comment}}</li>
+            </ul>
+            <form v-on:submit.prevent="addcomment" action="#" method="POST">
+                <input v-model="username" type="text" name="username" id="username" placeholder="username" required>
+                <input v-model="comment" type="text" name="comment" id="comment" placeholder="comment" required>
+                <button >Add Comment...</button>
+            </form>
+        </div>
+    </script>    
     <script src="/js/vue.js"></script>
     <script src="/js/axios.min.js"></script>
     <script src="/js/script.js"></script>

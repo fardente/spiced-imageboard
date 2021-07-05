@@ -32,7 +32,25 @@ function addImage(img) {
             [img.url, img.username, img.title, img.description]
         )
         .then((result) => {
-            console.log(result);
+            return result.rows[0];
+        });
+}
+
+function getCommentsById(image_id) {
+    return db
+        .query("SELECT * FROM comments WHERE image_id = $1", [image_id])
+        .then((result) => {
+            return result.rows;
+        });
+}
+
+function addComment(comment) {
+    return db
+        .query(
+            "INSERT INTO comments (image_id, username, comment) VALUES ($1, $2, $3) RETURNING *",
+            [comment.image_id, comment.username, comment.comment]
+        )
+        .then((result) => {
             return result.rows[0];
         });
 }
@@ -41,4 +59,6 @@ module.exports = {
     getImages,
     getImageById,
     addImage,
+    getCommentsById,
+    addComment,
 };

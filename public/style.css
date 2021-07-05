@@ -41,6 +41,15 @@ main {
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: white;
+}
+
+.modal li {
+    list-style-type: none;
+}
+
+.modal img {
+    width: 50%;
 }
 
 .closeBtn {

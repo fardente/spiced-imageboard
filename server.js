@@ -9,7 +9,7 @@ const awsBucketUrl = "https://nandoseimer.s3.amazonaws.com/";
 const app = express();
 
 app.use(express.urlencoded({ extended: false }));
-
+app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.get("/api/images.json", (request, response) => {
@@ -20,7 +20,12 @@ app.get("/api/images.json", (request, response) => {
 
 app.get("/api/images/:imageId", (request, response) => {
     db.getImageById(request.params.imageId).then((result) => {
-        console.log(result);
+        response.json(result);
+    });
+});
+
+app.get("/api/images/:imageId/comments", (request, response) => {
+    db.getCommentsById(request.params.imageId).then((result) => {
         response.json(result);
     });
 });
@@ -44,6 +49,12 @@ app.post("/upload", uploader.single("file"), upload, (request, response) => {
             success: false,
         });
     }
+});
+
+app.post("/api/images/:image_id/comments", (request, response) => {
+    db.addComment(request.body).then((result) => {
+        response.json(result);
+    });
 });
 
 const PORT = 8080;

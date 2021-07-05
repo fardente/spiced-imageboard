@@ -8,14 +8,46 @@ Vue.component("image-details", {
     },
     mounted: function () {
         axios.get("/api/images/" + this.id).then((image) => {
-            console.log(image.data);
             this.image = image.data;
         });
     },
     methods: {
         closeDetails: function (event) {
-            console.log("modal closedetails");
             this.$emit("close-details", event);
+        },
+    },
+});
+
+Vue.component("comments", {
+    template: "#comments",
+    props: ["image_id"],
+    data: function () {
+        return {
+            comments: [],
+            comment: "",
+            username: "",
+        };
+    },
+    mounted: function () {
+        axios
+            .get("/api/images/" + this.image_id + "/comments")
+            .then((comments) => {
+                this.comments = comments.data;
+            });
+    },
+    methods: {
+        addcomment: function () {
+            axios
+                .post("/api/images/" + this.image_id + "/comments", {
+                    image_id: this.image_id,
+                    username: this.username,
+                    comment: this.comment,
+                })
+                .then((comment) => {
+                    this.comments.unshift(comment.data);
+                    this.comment = "";
+                    this.username = "";
+                });
         },
     },
 });
@@ -25,7 +57,6 @@ new Vue({
     mounted: function () {
         axios.get("/api/images.json").then((result) => {
             this.images = result.data;
-            console.log("res", result.data[0].id);
         });
     },
     methods: {
@@ -39,12 +70,6 @@ new Vue({
             axios
                 .post("/upload", formData)
                 .then((result) => {
-                    console.log(
-                        "axios.post ",
-                        result.data,
-                        result.data.title,
-                        this.images
-                    );
                     event.target.parentElement.reset();
                     this.images.unshift(result.data);
                 })
@@ -53,16 +78,12 @@ new Vue({
                 });
         },
         getFile: function (event) {
-            console.log("Selected file", event);
             this.filePath = event.target.files[0];
-            console.log(event.target.files[0]);
         },
         showDetails: function (id) {
-            console.log("click on details", id);
             this.currentImgId = id;
         },
         closeDetails: function () {
-            console.log("Main vue closedetails");
             this.currentImgId = null;
         },
     },
