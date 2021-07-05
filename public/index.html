@@ -13,21 +13,21 @@
         <h1>{{mainTitle}}</h1>
         <h2>Add an Image now!</h2>
         <div class="upload">
-            <form
+            <form v-on:submit.prevent="fileUpload"
             action="/upload"
             method="POST"
             enctype="multipart/form-data"
             id="form"
             >
                 <label for="title">Title</label>
-                <input v-model.lazy="title" type="text" name="title" id="imgTitle">
+                <input v-model.lazy="title" type="text" name="title" id="imgTitle" required>
                 <label for="description">Description</label>
                 <input v-model.lazy="description" type="text" name="description" id="description">
                 <label for="username">Username</label>
-                <input v-model.lazy="username" type="text" name="username" id="username">
+                <input v-model.lazy="username" type="text" name="username" id="username" required>
                 <label for="file">File</label>
-                <input v-on:change="getFile" type="file" accept="image/*" name="file" id="file">
-                <button v-on:click="fileUpload" id="uploadBtn">Upload</button>
+                <input v-on:change="getFile" type="file" accept="image/*" name="file" id="file" required>
+                <button type="submit" id="uploadBtn">Upload</button>
             </form>
         </div>
         <div v-if="images.length > 0" class="imgWrapper">

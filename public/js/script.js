@@ -70,8 +70,12 @@ new Vue({
             axios
                 .post("/upload", formData)
                 .then((result) => {
-                    event.target.parentElement.reset();
                     this.images.unshift(result.data);
+                    event.target.reset();
+                    this.filePath = "";
+                    this.username = "";
+                    this.description = "";
+                    this.title = "";
                 })
                 .catch((error) => {
                     console.log("axios post error", error);
