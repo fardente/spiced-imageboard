@@ -117,22 +117,20 @@ main {
 .detailWrapper {
     max-width: 80%;
     max-height: 80%;
-    width: 100%;
-    height: 100%;
+    /* width: 100%;
+    height: 100%; */
     background-color: lightcoral;
     display: flex;
     background-color: lightcoral;
-    overflow: scroll;
 }
 
 .imgDetail {
     object-fit: contain;
-    overflow: scroll;
     /* margin: 20px auto; */
     background-color: black;
     /* width: 60%; */
     /* height: 100%; */
-    padding: 20px;
+    /* padding: 20px; */
     /* max-height: 90%; */
 }
 
@@ -141,8 +139,13 @@ main {
     width: 100%;
 }
 
+.comments {
+    flex: 0 0 auto;
+}
+
 .nextBtn {
-    align-self: center;
+    position: absolute;
+    left: 0;
     width: 50px;
     height: 50px;
     margin: 0 20px;
@@ -154,7 +157,8 @@ main {
 }
 
 .prevBtn {
-    align-self: center;
+    position: absolute;
+    right: 0;
     width: 50px;
     height: 50px;
     margin: 0 20px;
