@@ -68,7 +68,7 @@ Vue.component("image-details", {
 
 Vue.component("comments", {
     template: "#comments",
-    props: ["image_id"],
+    props: ["image_id", "image"],
     data: function () {
         return {
             comments: [],
@@ -213,4 +213,8 @@ new Vue({
         firstImageId: null,
         reachedEnd: false,
     },
+});
+
+Vue.filter("formatDate", function (value) {
+    return new Date(value).toLocaleString();
 });

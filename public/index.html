@@ -108,7 +108,7 @@
                 <div class="imgDetail">
                     <img v-bind:id="id" :src="image.url" alt="">
                 </div>
-                    <comments v-bind:image_id="id"></comments>
+                    <comments v-bind:image_id="id" v-bind:image="image"></comments>
                 </div>
                 <img v-bind:class="{ hidden: !prevBtn }" v-on:click="nextImage(image.prev, $event)" src="/prev.png" class="prevBtn"  alt="">
                 <button v-on:click="closeDetails" class="closeBtn">X</button>
@@ -117,10 +117,20 @@
         </script>
 
         <script id="comments" type="text/x-template">
-            <div class="comments">
-                <ul>
-                    <li v-for="comment in comments">{{comment.username}} - {{comment.comment}}</li>
-                </ul>
+            <div class="comment-box">
+                <header>
+                    {{image.title}}<br>
+                    <small> by {{image.username}} </small> <br>
+                   <small> <em>{{image.description}}</em></small>
+                </header>
+                <div class="comments" v-if="comments.length > 0" >
+                        <div v-for="comment in comments" class="comment">
+                            <div class="comment-text"><strong>{{comment.username}}</strong> - {{comment.comment}}</div>
+                            <div class="comment-date"><span> <small>{{ comment.created_at | formatDate }}</small> </span></div>
+                        </div>
+
+                </div>
+                <div v-else="" class="emptyMessage">No comments yet...</div>
                 <form v-on:submit.prevent="addcomment" action="#" method="POST">
                     <input v-model="username" type="text" name="username" id="username" placeholder="username" required>
                     <input v-model="comment" type="text" name="comment" id="comment" placeholder="comment" required>
