@@ -62,15 +62,10 @@
 
             <div v-if="images.length > 0" class="imgWrapper">
                 <div v-for="img in images" class="image">
-                    <a :href="'#' + img.id">
-                        <img
-                            loading="lazy"
-                            v-bind:id="img.id"
-                            :src="img.url"
-                            :alt="img.description"
-                        />
-                    </a>
-                    <p class="imgTitle">{{img.title}} - id: {{img.id}}</p>
+                    <image-card
+                        v-bind:image_id="img.id"
+                        v-bind:image="img"
+                    ></image-card>
                 </div>
             </div>
             <div v-else="" class="emptyMessage">No images to show...</div>
@@ -89,14 +84,33 @@
             ></image-details>
         </main>
 
+        <script id="image-card" type="text/x-template">
+            <div class="image-card">
+                 <a :href="'#' + image.id">
+                        <img
+                            loading="lazy"
+                            v-bind:id="image.id"
+                            :src="image.url"
+                            :alt="image.description"
+                        />
+                    </a>
+                    <div v-bind:class="classObject" v-on:mouseover="showImgInfo()" v-on:mouseleave="hideImgInfo()" v-on:click="showDetails(image.id)" class="imgTitle">
+                    <p><h2>{{image.title}}</h2></p>
+                    <p>Uploader: <strong>{{image.username}}</strong> </p>
+                    </div>
+            </div>
+        </script>
+
         <script id="image-details" type="text/x-template">
             <div class="modal" >
+                 <img v-bind:class="{ hidden: !nextBtn }" v-on:click="nextImage(image.next, $event)" src="/next.png" class="nextBtn"  alt="">
                 <div class="detailWrapper">
                 <div class="imgDetail">
                     <img v-bind:id="id" :src="image.url" alt="">
                 </div>
                     <comments v-bind:image_id="id"></comments>
                 </div>
+                <img v-bind:class="{ hidden: !prevBtn }" v-on:click="nextImage(image.prev, $event)" src="/prev.png" class="prevBtn"  alt="">
                 <button v-on:click="closeDetails" class="closeBtn">X</button>
                 <div v-on:click="closeDetails" class="modalBg"></div>
             </div>

@@ -1,3 +1,27 @@
+Vue.component("image-card", {
+    template: "#image-card",
+    props: ["image_id", "image"],
+    data: function () {
+        return {
+            classObject: {
+                hidden: true,
+            },
+        };
+    },
+    methods: {
+        showDetails: function (imageId) {
+            console.log("clicki", imageId);
+            location.hash = "#" + imageId;
+        },
+        showImgInfo: function () {
+            this.classObject.hidden = false;
+        },
+        hideImgInfo: function () {
+            this.classObject.hidden = true;
+        },
+    },
+});
+
 Vue.component("image-details", {
     template: "#image-details",
     props: ["id"],
@@ -6,6 +30,8 @@ Vue.component("image-details", {
             console.log("watcher reacts", newId, oldId);
             axios.get("/api/images/" + this.id).then((image) => {
                 this.image = image.data;
+                this.nextBtn = image.data.next;
+                this.prevBtn = image.data.prev;
                 console.log("alte id", this.id);
                 this.id = newId;
             });
@@ -14,16 +40,28 @@ Vue.component("image-details", {
     data: function () {
         return {
             image: {},
+            nextBtn: null,
+            prevBtn: null,
         };
     },
     mounted: function () {
         axios.get("/api/images/" + this.id).then((image) => {
             this.image = image.data;
+            this.nextBtn = image.data.next;
+            this.prevBtn = image.data.prev;
         });
     },
     methods: {
         closeDetails: function (event) {
             this.$emit("close-details", event);
+        },
+        nextImage: function (imageId, event) {
+            // this.id = imageId; -> avoid mutating props directly
+            if (imageId) {
+                location.hash = "#" + imageId;
+            } else {
+                this.closeDetails(event);
+            }
         },
     },
 });
@@ -127,6 +165,9 @@ new Vue({
         updateFirstId: function () {
             axios.get("/api/images/first").then((first_id) => {
                 this.firstImageId = first_id.data;
+                if (this.latest_id === this.firstImageId) {
+                    this.reachedEnd = true;
+                }
             });
         },
         updateLatestId: function (arr) {
@@ -151,9 +192,7 @@ new Vue({
                 });
         },
         parseHash: function () {
-            console.log("parsing hash");
             const hash = parseInt(location.hash.slice(1));
-            console.log(hash, typeof hash);
             if (hash != "" && typeof hash == "number" && !Number.isNaN(hash)) {
                 console.log("hash is ", +location.hash.slice(1));
                 return hash;

@@ -18,8 +18,15 @@ function getImages() {
 
 function getImageById(id) {
     return db
-        .query("SELECT * FROM images WHERE id = $1", [id])
+        .query(
+            `SELECT *,
+        (SELECT id FROM images WHERE id < $1 ORDER BY ID DESC LIMIT 1) as prev,
+        (SELECT id FROM images WHERE id > $1 ORDER BY ID ASC LIMIT 1) as next
+        FROM images WHERE id = $1`,
+            [id]
+        )
         .then((result) => {
+            console.log("image by id", result.rows[0]);
             return result.rows[0];
         });
 }

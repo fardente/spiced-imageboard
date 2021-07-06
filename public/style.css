@@ -18,6 +18,10 @@ header {
     bottom: -40px;
 } */
 
+.hidden {
+    opacity: 0;
+}
+
 .emptyMessage {
     text-align: center;
 }
@@ -40,7 +44,7 @@ header {
 .image {
     margin: 5px;
     padding: 5px;
-    border: 1px solid green;
+    /* border: 1px solid green; */
 }
 
 .image img {
@@ -50,14 +54,34 @@ header {
     border: 1px solid #000;
     margin: 10px 0;
 }
-
-.image img:hover {
+/* 
+.image-card:hover {
     opacity: 0.5;
+} */
+
+.image-card {
+    position: relative;
 }
 
 .imgTitle {
-    padding: 0;
-    margin: 0;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    padding: 25px;
+    margin: 10px 0;
+    width: 300px;
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    background-color: rgba(50, 47, 47, 0.5);
+    transition: opacity 0.3s ease;
+    color: #fafafa;
+    /* font-weight: bold; */
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 main {
@@ -102,6 +126,7 @@ main {
 }
 
 .imgDetail {
+    object-fit: contain;
     overflow: scroll;
     /* margin: 20px auto; */
     background-color: black;
@@ -114,6 +139,30 @@ main {
 .imgDetail img {
     height: 100%;
     width: 100%;
+}
+
+.nextBtn {
+    align-self: center;
+    width: 50px;
+    height: 50px;
+    margin: 0 20px;
+    transition: transform 0.3s ease;
+}
+
+.nextBtn:hover {
+    transform: scale(1.2);
+}
+
+.prevBtn {
+    align-self: center;
+    width: 50px;
+    height: 50px;
+    margin: 0 20px;
+    transition: transform 0.3s ease;
+}
+
+.prevBtn:hover {
+    transform: scale(1.2);
 }
 
 .closeBtn {
