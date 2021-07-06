@@ -122,6 +122,7 @@ new Vue({
             console.log("close event", event);
             event.stopPropagation();
             this.currentImgId = null;
+            location.hash = "";
         },
         updateFirstId: function () {
             axios.get("/api/images/first").then((first_id) => {
