@@ -73,6 +73,6 @@ app.post("/api/images/:image_id/comments", (request, response) => {
     });
 });
 
-const PORT = 8080;
+const PORT = 8084;
 
 app.listen(PORT);

@@ -63,7 +63,7 @@ header {
     justify-content: center;
     background-color: aliceblue;
     color: darkslateblue;
-    position: relative;
+    position: absolute;
     bottom: 0;
     width: 100%;
     text-align: center;
@@ -123,6 +123,7 @@ header {
 
 main {
     position: relative;
+    height: 95vh;
 }
 
 .modal {
