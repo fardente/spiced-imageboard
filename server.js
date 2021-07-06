@@ -19,6 +19,12 @@ app.get("/api/images.json", (request, response) => {
 });
 
 app.get("/api/images/:imageId", (request, response) => {
+    if (request.params.imageId == "first") {
+        db.getFirstImageId().then((result) => {
+            response.json(result[0].id);
+        });
+        return;
+    }
     db.getImageById(request.params.imageId).then((result) => {
         response.json(result);
     });
@@ -28,6 +34,16 @@ app.get("/api/images/:imageId/comments", (request, response) => {
     db.getCommentsById(request.params.imageId).then((result) => {
         response.json(result);
     });
+});
+
+app.get("/api/images", (request, response) => {
+    console.log("app.get api/images", request.query);
+    db.getMoreImages(request.query).then((result) => {
+        console.log(result);
+        response.json(result);
+    });
+
+    // db.getMoreImages()
 });
 
 app.post("/upload", uploader.single("file"), upload, (request, response) => {

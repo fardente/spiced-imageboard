@@ -1,67 +1,122 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/style.css">
-    <title>Document</title>
-</head>
-<body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="/style.css" />
+        <title>Document</title>
+    </head>
+    <body>
+        <main id="main">
+            <header>
+                <div class="title">
+                    <h1>{{mainTitle}}</h1>
+                    <h2>Add an Image now!</h2>
+                </div>
 
-    <main id="main">
-        <h1>{{mainTitle}}</h1>
-        <h2>Add an Image now!</h2>
-        <div class="upload">
-            <form v-on:submit.prevent="fileUpload"
-            action="/upload"
-            method="POST"
-            enctype="multipart/form-data"
-            id="form"
-            >
-                <label for="title">Title</label>
-                <input v-model.lazy="title" type="text" name="title" id="imgTitle" required>
-                <label for="description">Description</label>
-                <input v-model.lazy="description" type="text" name="description" id="description">
-                <label for="username">Username</label>
-                <input v-model.lazy="username" type="text" name="username" id="username" required>
-                <label for="file">File</label>
-                <input v-on:change="getFile" type="file" accept="image/*" name="file" id="file" required>
-                <button type="submit" id="uploadBtn">Upload</button>
-            </form>
-        </div>
-        <div v-if="images.length > 0" class="imgWrapper">
-            <div v-for="img in images" class="image">
-                <img v-bind:id="img.id" v-on:click="showDetails(img.id)" :src="img.url" :alt="img.description">
-                <p class="imgTitle">{{img.title}}</p>
+                <div class="upload">
+                    <form
+                        v-on:submit.prevent="fileUpload"
+                        action="/upload"
+                        method="POST"
+                        enctype="multipart/form-data"
+                        id="form"
+                    >
+                        <label for="title">Title</label>
+                        <input
+                            v-model.lazy="title"
+                            type="text"
+                            name="title"
+                            id="imgTitle"
+                            required
+                        />
+                        <label for="description">Description</label>
+                        <input
+                            v-model.lazy="description"
+                            type="text"
+                            name="description"
+                            id="description"
+                        />
+                        <label for="username">Username</label>
+                        <input
+                            v-model.lazy="username"
+                            type="text"
+                            name="username"
+                            id="username"
+                            required
+                        />
+                        <label for="file">File</label>
+                        <input
+                            v-on:change="getFile"
+                            type="file"
+                            accept="image/*"
+                            name="file"
+                            id="file"
+                            required
+                        />
+                        <button type="submit" id="uploadBtn">Upload</button>
+                    </form>
+                </div>
+            </header>
+
+            <div v-if="images.length > 0" class="imgWrapper">
+                <div v-for="img in images" class="image">
+                    <a :href="'#' + img.id">
+                        <img
+                            loading="lazy"
+                            v-bind:id="img.id"
+                            :src="img.url"
+                            :alt="img.description"
+                        />
+                    </a>
+                    <p class="imgTitle">{{img.title}} - id: {{img.id}}</p>
+                </div>
             </div>
-        </div>
-        <div v-else="">No images to show...</div>
+            <div v-else="" class="emptyMessage">No images to show...</div>
 
-            <image-details v-on:close-details="closeDetails" v-if="currentImgId" v-bind:id="currentImgId"></image-details>
+            <section class="loadBtn" v-if="images.length > 0">
+                <button v-on:click="loadMoreImages" v-if="!reachedEnd">
+                    Load More...
+                </button>
+                <span v-if="reachedEnd">The End!</span>
+            </section>
 
-    </main>
-    <script id="image-details" type="text/x-template">
-        <div class="modal">
-            <button v-on:click="closeDetails" class="closeBtn">X</button>
-            <img v-bind:id="id" :src="image.url" alt="">
-            <comments v-bind:image_id="id"></comments>
-        </div>
-    </script> 
+            <image-details
+                v-on:close-details="closeDetails"
+                v-if="currentImgId"
+                v-bind:id="currentImgId"
+            ></image-details>
+        </main>
+
+        <script id="image-details" type="text/x-template">
+            <div class="modal" >
+                <div class="detailWrapper">
+                <div class="imgDetail">
+                    <img v-bind:id="id" :src="image.url" alt="">
+                </div>
+                    <comments v-bind:image_id="id"></comments>
+                </div>
+                <button v-on:click="closeDetails" class="closeBtn">X</button>
+                <div v-on:click="closeDetails" class="modalBg"></div>
+            </div>
+        </script>
+
         <script id="comments" type="text/x-template">
-        <div class="comments">
-            <ul>
-                <li v-for="comment in comments">{{comment.username}} - {{comment.comment}}</li>
-            </ul>
-            <form v-on:submit.prevent="addcomment" action="#" method="POST">
-                <input v-model="username" type="text" name="username" id="username" placeholder="username" required>
-                <input v-model="comment" type="text" name="comment" id="comment" placeholder="comment" required>
-                <button >Add Comment...</button>
-            </form>
-        </div>
-    </script>    
-    <script src="/js/vue.js"></script>
-    <script src="/js/axios.min.js"></script>
-    <script src="/js/script.js"></script>
-</body>
+            <div class="comments">
+                <ul>
+                    <li v-for="comment in comments">{{comment.username}} - {{comment.comment}}</li>
+                </ul>
+                <form v-on:submit.prevent="addcomment" action="#" method="POST">
+                    <input v-model="username" type="text" name="username" id="username" placeholder="username" required>
+                    <input v-model="comment" type="text" name="comment" id="comment" placeholder="comment" required>
+                    <button >Add Comment...</button>
+                </form>
+            </div>
+        </script>
+
+        <script src="/js/vue.js"></script>
+        <script src="/js/axios.min.js"></script>
+        <script src="/js/script.js"></script>
+    </body>
 </html>

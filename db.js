@@ -9,7 +9,7 @@ if (process.env.DATABASE_URL) {
 
 function getImages() {
     return db
-        .query("SELECT * FROM images ORDER BY id DESC")
+        .query("SELECT * FROM images ORDER BY id DESC LIMIT 6")
         .then((result) => {
             return result.rows;
         })
@@ -24,8 +24,29 @@ function getImageById(id) {
         });
 }
 
+function getFirstImageId() {
+    return db
+        .query("SELECT id FROM images ORDER BY id ASC LIMIT 1")
+        .then((result) => {
+            return result.rows;
+        })
+        .catch((error) => {
+            console.log("db.js getFirstImageId", error);
+        });
+}
+
+function getMoreImages({ latest_id, limit }) {
+    return db
+        .query("SELECT * FROM images WHERE id < $1 ORDER BY id DESC LIMIT $2", [
+            latest_id,
+            limit,
+        ])
+        .then((result) => {
+            return result.rows;
+        });
+}
+
 function addImage(img) {
-    console.log("img", img);
     return db
         .query(
             "INSERT INTO images (url, username, title, description) VALUES ($1, $2, $3, $4) RETURNING *",
@@ -38,7 +59,9 @@ function addImage(img) {
 
 function getCommentsById(image_id) {
     return db
-        .query("SELECT * FROM comments WHERE image_id = $1", [image_id])
+        .query("SELECT * FROM comments WHERE image_id = $1 ORDER BY id DESC", [
+            image_id,
+        ])
         .then((result) => {
             return result.rows;
         });
@@ -56,8 +79,10 @@ function addComment(comment) {
 }
 
 module.exports = {
+    getFirstImageId,
     getImages,
     getImageById,
+    getMoreImages,
     addImage,
     getCommentsById,
     addComment,
