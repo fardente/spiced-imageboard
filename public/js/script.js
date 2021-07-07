@@ -143,7 +143,7 @@ new Vue({
                     this.username = "";
                     this.description = "";
                     this.title = "";
-                    this.latest_id = result.data.id;
+                    // this.latest_id = result.data.id;
                     console.log("latest id nach upload", result.data.id);
                 })
                 .catch((error) => {
@@ -209,7 +209,7 @@ new Vue({
         title: "",
         currentImgId: null,
         latest_id: null,
-        limit: 5,
+        limit: 4,
         firstImageId: null,
         reachedEnd: false,
     },

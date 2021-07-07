@@ -9,7 +9,7 @@ if (process.env.DATABASE_URL) {
 
 function getImages() {
     return db
-        .query("SELECT * FROM images ORDER BY id DESC LIMIT 6")
+        .query("SELECT * FROM images ORDER BY id DESC LIMIT 8")
         .then((result) => {
             return result.rows;
         })
