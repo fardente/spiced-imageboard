@@ -301,7 +301,7 @@ button {
     display: block;
 }
 
-@media screen and (max-width: 1500px) {
+@media screen and (max-width: 1950px) {
     #uploadForm {
         max-width: 90%;
     }
