@@ -23,38 +23,44 @@
                         enctype="multipart/form-data"
                         id="uploadForm"
                     >
-                        <label for="title">Title</label>
+                        <label for="title"></label>
                         <input
                             v-model.lazy="title"
                             type="text"
                             name="title"
                             id="imgTitle"
+                            placeholder="Title"
                             required
                         />
-                        <label for="description">Description</label>
+                        <label for="description"></label>
                         <input
                             v-model.lazy="description"
                             type="text"
                             name="description"
                             id="description"
+                            placeholder="Description"
                         />
-                        <label for="username">Username</label>
+                        <label for="username"></label>
                         <input
                             v-model.lazy="username"
                             type="text"
                             name="username"
                             id="username"
+                            placeholder="Username"
                             required
                         />
-                        <label for="file">File</label>
-                        <input
-                            v-on:change="getFile"
-                            type="file"
-                            accept="image/*"
-                            name="file"
-                            id="file"
-                            required
-                        />
+                        <label for="file" class="fileWrapper">
+                            <input
+                                v-on:change="getFile"
+                                type="file"
+                                accept="image/*"
+                                name="file"
+                                id="file"
+                                required
+                            />
+                            <div class="fileBtn">Browse...</div>
+                        </label>
+
                         <button type="submit" id="uploadBtn">Upload</button>
                     </form>
                 </div>
