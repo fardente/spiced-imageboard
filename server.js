@@ -4,6 +4,8 @@ const db = require("./db");
 const uploader = require("./uploader");
 const { upload } = require("./s3");
 
+const PORT = process.env.PORT || 3001;
+
 const awsBucketUrl = "https://nandoseimer.s3.amazonaws.com/";
 
 const app = express();
@@ -72,7 +74,5 @@ app.post("/api/images/:image_id/comments", (request, response) => {
         response.json(result);
     });
 });
-
-const PORT = 8084;
 
 app.listen(PORT);
